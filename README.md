@@ -72,6 +72,19 @@ npm run dev
 The user interface will initialize at http://localhost:5173
 
 ## Preparing for Deployment
-If deploying to platforms like Vercel (Frontend) or Render (Backend):
-1. Frontend: Add your live backend URL to your Vercel Environment Variables as `VITE_API_URL`. The application will automatically route traffic appropriately.
-2. Backend: Configure the `GEMINI_API_KEY` and `DATABASE_URL` within your server's environment configuration. Provide your cloud PostgreSQL URL to ensure permanent data storage.
+
+The application is structured to decouple the frontend and backend for modern cloud deployment.
+
+### 1. Database Deployment (Render PostgreSQL)
+The backend requires a persistent PostgreSQL database. Create a free PostgreSQL instance on Render.com and copy the provided Internal Database URL.
+
+### 2. Backend Deployment (Render Web Service)
+Deploy the `backend` directory as a new Web Service on Render. Set the root directory to `backend`, the environment to Python 3, and the start command to `python -m uvicorn main:app --host 0.0.0.0 --port 10000`. You must configure two Environment Variables in the Render dashboard:
+- `GEMINI_API_KEY`: Your Google AI Studio key.
+- `DATABASE_URL`: The Internal Database URL generated in step 1.
+
+### 3. Frontend Deployment (Vercel)
+Deploy the `frontend` directory as a new project on Vercel. Vercel will automatically detect the Vite framework and handle the build settings. You must configure one Environment Variable in the Vercel dashboard:
+- `VITE_API_URL`: The public URL of your deployed Render backend service (e.g., `https://your-backend.onrender.com`). Ensure there is no trailing slash.
+
+For a comprehensive, step-by-step walkthrough of this exact process, please read the included `DEPLOYMENT.md` file.
