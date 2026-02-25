@@ -1,7 +1,14 @@
 import sqlite3
 import os
 
-DB_NAME = "app.db"
+# Check if we are running on Render with a persistent disk attached
+RENDER_DISK_PATH = "/opt/render/project/src/backend/data"
+if os.path.exists(RENDER_DISK_PATH):
+    print("Persistent Disk found! Using Render mount.")
+    DB_NAME = os.path.join(RENDER_DISK_PATH, "app.db")
+else:
+    # We are running locally
+    DB_NAME = "app.db"
 
 def get_db_connection():
     if not os.path.exists(DB_NAME):
