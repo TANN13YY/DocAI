@@ -9,18 +9,19 @@ A full-stack web application utilizing Google Gemini AI (2.5 Flash) to transform
 - Listen & Translate: Features Text-to-Speech (TTS) capabilities and one-click translation into Hindi.
 - Public Sharing: Generates read-only, shareable public links for study guides.
 - Professional Export: Allows downloading of the formatted study guide as a standard PDF.
-- Admin Review System: Includes an integrated user review system with a backend CLI management tool (manage_reviews.py).
+- Admin Review System: Includes an integrated user review system and contact form with backend CLI management tools (`manage_reviews.py` and `manage_contacts.py`).
 - Dynamic Interface: Built with React and Tailwind CSS, featuring dark mode and responsive design.
 
 ## Tech Stack
 - Frontend: React, Vite, Tailwind CSS, Axios, Lucide-React
-- Backend: Python, FastAPI, SQLite, pdfplumber, python-docx
+- Backend: Python, FastAPI, PostgreSQL, pdfplumber, python-docx
 - AI Integration: Google Generative AI (gemini-2.5-flash)
 
 ## Prerequisites
-- Python 3.8 or higher
-- Node.js 16 or higher
-- Google Gemini API Key
+- Python 3.8+
+- Node.js 16+
+- Google Gemini API Key (Get one free from Google AI Studio)
+- Cloud PostgreSQL Database URL
 
 ## Installation & Local Setup
 
@@ -38,9 +39,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the `backend/` folder and configure your API key:
+Create a `.env` file in the `backend/` folder and configure your API key and Postgres connection URL:
 ```env
 GEMINI_API_KEY=your_actual_api_key_here
+DATABASE_URL=postgres://your_database_url_here
 ```
 
 ### 2. Frontend Setup
@@ -72,4 +74,4 @@ The user interface will initialize at http://localhost:5173
 ## Preparing for Deployment
 If deploying to platforms like Vercel (Frontend) or Render (Backend):
 1. Frontend: Add your live backend URL to your Vercel Environment Variables as `VITE_API_URL`. The application will automatically route traffic appropriately.
-2. Backend: Configure the `GEMINI_API_KEY` within your server's environment configuration. Ensure a persistent disk volume is attached if utilizing the local SQLite database (`app.db`) to prevent data loss between server restarts.
+2. Backend: Configure the `GEMINI_API_KEY` and `DATABASE_URL` within your server's environment configuration. Provide your cloud PostgreSQL URL to ensure permanent data storage.
