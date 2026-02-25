@@ -71,6 +71,15 @@ npm run dev
 ```
 The user interface will initialize at http://localhost:5173
 
+## Database Management (Optional)
+
+To visually view, edit, or manage the data inside the PostgreSQL database (such as viewing `reviews` and `contact_submissions` in a spreadsheet format), you can use a free database client like DBeaver.
+
+1. Download and install [DBeaver Community Edition](https://dbeaver.io/download/).
+2. Click the **New Database Connection** button and select **PostgreSQL**.
+3. In the connection window, fill out the required host, database, username, and password fields using the **External Database URL** provided by Render (or your PostgreSQL provider).
+4. Click **Finish**. You can now navigate to `Databases > your_db_name > Schemas > public > Tables` to view and edit your live data.
+
 ## Preparing for Deployment
 
 The application is structured to decouple the frontend and backend for modern cloud deployment.
