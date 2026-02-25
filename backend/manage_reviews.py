@@ -1,37 +1,40 @@
-import sqlite3
+import psycopg2
+import psycopg2.extras
 import os
+from dotenv import load_dotenv
 
-# Check if we are running on Render with a persistent disk attached
-RENDER_DISK_PATH = "/opt/render/project/src/backend/data"
-if os.path.exists(RENDER_DISK_PATH):
-    print("Persistent Disk found! Using Render mount.")
-    DB_NAME = os.path.join(RENDER_DISK_PATH, "app.db")
-else:
-    # We are running locally
-    DB_NAME = "app.db"
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db_connection():
-    if not os.path.exists(DB_NAME):
-        print(f"Error: Database '{DB_NAME}' not found.")
+    if not DATABASE_URL:
+        print("Error: DATABASE_URL not set in environment.")
         return None
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        conn.cursor_factory = psycopg2.extras.DictCursor
+        return conn
+    except Exception as e:
+        print(f"Error connecting to database: {e}")
+        return None
 
 def list_reviews(is_approved):
     conn = get_db_connection()
     if not conn: return []
     
     c = conn.cursor()
-    c.execute('SELECT * FROM reviews WHERE is_approved = ? ORDER BY created_at DESC', (1 if is_approved else 0,))
+    c.execute('SELECT * FROM reviews WHERE is_approved = %s ORDER BY created_at DESC', (is_approved,))
     reviews = c.fetchall()
+    # DictCursor allows dictionary-like access
     conn.close()
     return reviews
 
 def approve_review(review_id):
     conn = get_db_connection()
+    if not conn: return False
     c = conn.cursor()
-    c.execute('UPDATE reviews SET is_approved = 1 WHERE id = ?', (review_id,))
+    c.execute('UPDATE reviews SET is_approved = TRUE WHERE id = %s', (review_id,))
     conn.commit()
     rows_affected = c.rowcount
     conn.close()
@@ -39,8 +42,9 @@ def approve_review(review_id):
 
 def unapprove_review(review_id):
     conn = get_db_connection()
+    if not conn: return False
     c = conn.cursor()
-    c.execute('UPDATE reviews SET is_approved = 0 WHERE id = ?', (review_id,))
+    c.execute('UPDATE reviews SET is_approved = FALSE WHERE id = %s', (review_id,))
     conn.commit()
     rows_affected = c.rowcount
     conn.close()
@@ -48,8 +52,9 @@ def unapprove_review(review_id):
 
 def delete_review(review_id):
     conn = get_db_connection()
+    if not conn: return False
     c = conn.cursor()
-    c.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
+    c.execute('DELETE FROM reviews WHERE id = %s', (review_id,))
     conn.commit()
     rows_affected = c.rowcount
     conn.close()
@@ -60,7 +65,7 @@ def handle_pending():
         reviews = list_reviews(is_approved=False)
         print(f"\n--- Pending Reviews ({len(reviews)}) ---")
         for r in reviews:
-            print(f"[ID: {r['id']}] {r['name']} ({r['rating']}/5): {r['content'][:60]}...")
+            print(f"[ID: {r['id']}] {r['name']} ({r['rating']}/5): {str(r['content'])[:60]}...")
 
         if not reviews:
             print("No pending reviews.")
@@ -89,7 +94,7 @@ def handle_approved():
         reviews = list_reviews(is_approved=True)
         print(f"\n--- Active/Approved Reviews ({len(reviews)}) ---")
         for r in reviews:
-            print(f"[ID: {r['id']}] {r['name']} ({r['rating']}/5): {r['content'][:60]}...")
+            print(f"[ID: {r['id']}] {r['name']} ({r['rating']}/5): {str(r['content'])[:60]}...")
 
         if not reviews:
             print("No active reviews.")
@@ -131,7 +136,7 @@ def main():
         elif choice == '3':
             break
         else:
-            print("Invalid option.")
+            print("Invalid choice.")
 
 if __name__ == "__main__":
     main()

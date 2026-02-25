@@ -2,11 +2,15 @@
 
 ## manage_reviews.py
 
-This script allows you to manage user reviews in the SQLite database.
+This script allows you to manage user reviews directly in your PostgreSQL cloud database. 
+
+**Prerequisites:**
+You must have your `DATABASE_URL` properly configured inside your `backend/.env` file. The script uses this URL to connect to the live database.
 
 **Usage:**
-1. Open terminal in `backend/` directory.
-2. Run `python manage_reviews.py`.
+1. Open your terminal in the `backend/` directory.
+2. Ensure your virtual environment is active.
+3. Run `python manage_reviews.py`.
 
 **Features:**
 - **Manage Pending Reviews**: View reviews waiting for approval.
