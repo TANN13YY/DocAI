@@ -4,6 +4,7 @@ import Home from './components/Home';
 import SharedView from './components/SharedView';
 import { ToastProvider } from './context/ToastContext';
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -25,6 +26,7 @@ function App() {
   return (
     <ToastProvider>
       <SpeedInsights />
+      <Analytics />
       <Router>
         <div className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'dark bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
           <Routes>
