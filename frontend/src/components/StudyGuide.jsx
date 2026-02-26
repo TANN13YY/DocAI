@@ -247,7 +247,7 @@ const StudyGuide = React.forwardRef(({ content, onReset, isInWorkspace = false, 
                     </div>
 
                     {/* Content Area */}
-                    <div ref={contentRef} className={`p-4 sm:p-6 md:p-12 prose prose-lg prose-slate dark:prose-invert max-w-none transition-colors duration-200 ${isInWorkspace ? 'overflow-y-auto flex-1 custom-scrollbar bg-transparent' : 'bg-transparent'}`}>
+                    <div ref={contentRef} className={`py-4 px-2 sm:p-6 md:p-12 prose prose-lg prose-slate dark:prose-invert max-w-none transition-colors duration-200 ${isInWorkspace ? 'overflow-y-auto flex-1 custom-scrollbar bg-transparent' : 'bg-transparent'}`}>
 
                         {isTranslating ? (
                             <div className="flex flex-col items-center justify-center py-32 text-slate-400">
