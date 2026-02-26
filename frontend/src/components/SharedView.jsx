@@ -61,7 +61,7 @@ const SharedView = ({ isDarkMode, toggleTheme }) => {
             </div>
 
             {/* Navbar with Glassmorphism */}
-            <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-4 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md transition-all">
+            <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 sm:px-8 py-4 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md transition-all">
                 <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <FileText className="w-8 h-8 text-white fill-blue-600 drop-shadow-md" strokeWidth={1.5} />
                     <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">DocAI</span>

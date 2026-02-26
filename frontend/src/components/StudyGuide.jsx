@@ -24,8 +24,11 @@ const StudyGuide = React.forwardRef(({ content, onReset, isInWorkspace = false, 
                 .replace(/[#*`_~]/g, '') // Remove basic markdown symbols
                 .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links
                 .replace(/^\s*[-+]\s+/gm, '') // Remove list bullets
-                .replace(/\n+/g, '. '); // Replace newlines with pauses
-            speak(text);
+                .replace(/\n+/g, ' '); // Replace newlines with spaces for smoother Android TTS
+
+            // Pass the accurate lang code parameter to our TTS hook
+            const langCode = currentLanguage === 'Hindi' ? 'hi-IN' : 'en-US';
+            speak(text, langCode);
         }
     };
     const [isTranslating, setIsTranslating] = useState(false);
@@ -126,7 +129,7 @@ const StudyGuide = React.forwardRef(({ content, onReset, isInWorkspace = false, 
 
                     {/* Header (Only for standalone view) */}
                     {!isInWorkspace && (
-                        <div className="bg-white/30 dark:bg-slate-800/30 p-8 flex justify-between items-center text-slate-800 dark:text-white relative border-b border-white/10 dark:border-slate-700/50">
+                        <div className="bg-white/30 dark:bg-slate-800/30 p-5 sm:p-8 flex justify-between items-center text-slate-800 dark:text-white relative border-b border-white/10 dark:border-slate-700/50">
                             <h2 className="text-3xl font-extrabold flex items-center relative z-10 tracking-tight">
                                 {showEmoji && <span className="text-4xl mr-4 filter drop-shadow-md">✨</span>}
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-300 dark:to-indigo-300">
@@ -164,7 +167,7 @@ const StudyGuide = React.forwardRef(({ content, onReset, isInWorkspace = false, 
                         </div>
                     )}
 
-                    <div className="flex justify-end pt-4 px-8 mb-2 z-20 gap-3">
+                    <div className="flex justify-end pt-4 px-4 sm:px-8 mb-2 z-20 gap-3">
                         {showListen && (
                             <button
                                 onClick={handleSpeak}
@@ -244,7 +247,7 @@ const StudyGuide = React.forwardRef(({ content, onReset, isInWorkspace = false, 
                     </div>
 
                     {/* Content Area */}
-                    <div ref={contentRef} className={`p-8 md:p-12 prose prose-lg prose-slate dark:prose-invert max-w-none transition-colors duration-200 ${isInWorkspace ? 'overflow-y-auto flex-1 custom-scrollbar bg-transparent' : 'bg-transparent'}`}>
+                    <div ref={contentRef} className={`p-4 sm:p-6 md:p-12 prose prose-lg prose-slate dark:prose-invert max-w-none transition-colors duration-200 ${isInWorkspace ? 'overflow-y-auto flex-1 custom-scrollbar bg-transparent' : 'bg-transparent'}`}>
 
                         {isTranslating ? (
                             <div className="flex flex-col items-center justify-center py-32 text-slate-400">

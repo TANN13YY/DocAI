@@ -74,19 +74,27 @@ async def get_gemini_response_async(text: str) -> str:
     
     try:
         prompt = f"""
-        You are an expert academic tutor. Create a comprehensive, high-quality study guide for the following text.
+        You are an expert document analyzer and academic tutor. Your task is to analyze the following text and generate an appropriate summary based on the document's nature.
         
         **CRITICAL INSTRUCTIONS**:
-        1. **FULL COVERAGE**: You must analyze the **ENTIRE** provided text.
+        1. **FULL COVERAGE**: You must process the **ENTIRE** provided text.
         2. **STRICT FORMATTING**: 
-           - **DO NOT indent headings**.
+           - **DO NOT indent headings**, e.g. use `# Heading`.
            - Do not use code blocks for normal text.
+        3. **ADAPTIVE OUTPUT**: First, determine the type of the document.
         
+        If the document is EDUCATIONAL, INFORMATIVE, or ACADEMIC (e.g., articles, books, lectures, manuals):
         The study guide MUST include:
         1. **Executive Summary**: Comprehensive overview.
         2. **Key Concepts**: Structured list with definitions.
         3. **Study Notes**: Detailed explanations.
         4. **Practice Questions**: 10 distinct multiple-choice questions.
+        
+        If the document is TRANSACTIONAL, ADMINISTRATIVE, or a SHORT RECORD (e.g., bank receipts, invoices, admit cards, tickets, brief notices):
+        The concise summary MUST include:
+        1. **Executive Summary**: What the document is.
+        2. **Key Details**: Core extracted information (dates, amounts, IDs, names) in a structured list.
+        (DO NOT include Practice Questions or Study Notes for these types of documents).
         
         Format the output in clean, professional Markdown. 
         

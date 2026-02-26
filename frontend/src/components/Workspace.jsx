@@ -23,9 +23,51 @@ const Workspace = ({ file, summary, isLoading, onBack, isDarkMode, toggleTheme, 
                 content: summary
             });
             const shareUrl = `${window.location.origin}/share/${response.data.share_id}`;
-            navigator.clipboard.writeText(shareUrl);
 
-            showToast('Link copied to clipboard');
+            // Modern native share for iOS/Android
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: file ? file.name : 'Generated Study Guide',
+                        url: shareUrl
+                    });
+                    // Let the OS handle the success message
+                    return;
+                } catch (err) {
+                    // Fall through to clipboard copy if user dismissed the share dialog
+                }
+            }
+
+            // Clipboard API (works on Desktop mostly)
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(shareUrl);
+                showToast('Link copied to clipboard');
+            } else {
+                // Fallback for older iOS Safari and non-HTTPS local dev
+                const textArea = document.createElement("textarea");
+                textArea.value = shareUrl;
+
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showToast('Link copied to clipboard');
+                    } else {
+                        showToast('Failed to copy. Share link: ' + shareUrl, 'error');
+                    }
+                } catch (err) {
+                    showToast('Failed to copy. Share link: ' + shareUrl, 'error');
+                }
+                document.body.removeChild(textArea);
+            }
         } catch (error) {
             console.error('Sharing failed:', error);
             showToast('Failed to generate share link.', 'error');
@@ -37,7 +79,7 @@ const Workspace = ({ file, summary, isLoading, onBack, isDarkMode, toggleTheme, 
             {/* Toast Notification */}
             {/* Header - Hidden in Read Mode */}
             {!readMode && (
-                <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between shadow-sm z-10">
+                <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-4 flex items-center justify-between shadow-sm z-10">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={onBack}
@@ -108,7 +150,7 @@ const Workspace = ({ file, summary, isLoading, onBack, isDarkMode, toggleTheme, 
             )}
 
             {/* Main Layout */}
-            <div className={`flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-4 relative ${readMode ? 'pt-8' : ''}`}>
+            <div className={`flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-0 sm:p-4 relative ${readMode ? 'pt-8' : ''}`}>
                 <div className={`mx-auto h-full transition-all duration-300 ${readMode ? 'max-w-5xl' : 'max-w-4xl'}`}>
                     {isLoading ? (
                         <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500">
