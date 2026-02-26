@@ -79,31 +79,31 @@ const Workspace = ({ file, summary, isLoading, onBack, isDarkMode, toggleTheme, 
             {/* Toast Notification */}
             {/* Header - Hidden in Read Mode */}
             {!readMode && (
-                <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-4 flex items-center justify-between shadow-sm z-10">
-                    <div className="flex items-center gap-4">
+                <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-3 sm:px-6 py-3 flex items-center justify-between shadow-sm z-10 w-full overflow-hidden">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-shrink min-w-0">
                         <button
                             onClick={onBack}
-                            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-500 dark:text-slate-400 transition-colors"
+                            className="p-1.5 sm:p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-500 dark:text-slate-400 transition-colors flex-shrink-0"
                             title="Back to Home"
                         >
                             <ArrowLeft className="w-5 h-5" />
                         </button>
-                        <div>
-                            <h1 className="font-bold text-slate-800 dark:text-white truncate max-w-md">
+                        <div className="min-w-0">
+                            <h1 className="font-bold text-slate-800 dark:text-white truncate max-w-[120px] sm:max-w-xs md:max-w-md text-sm sm:text-base">
                                 {file ? file.name : 'Document'}
                             </h1>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                            <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">
                                 AI Generated Study Guide
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                         <button
                             onClick={toggleTheme}
-                            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 transition-colors"
+                            className="p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 transition-colors"
                             title="Toggle Theme"
                         >
-                            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                            {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
                         </button>
 
                         {summary && (
@@ -111,26 +111,28 @@ const Workspace = ({ file, summary, isLoading, onBack, isDarkMode, toggleTheme, 
                                 {/* Share Button */}
                                 <button
                                     onClick={handleShare}
-                                    className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+                                    className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+                                    title="Share"
                                 >
                                     <Share2 className="w-4 h-4" />
-                                    Share
+                                    <span className="hidden sm:inline">Share</span>
                                 </button>
 
                                 {/* Download Button */}
                                 <button
                                     onClick={handleDownload}
-                                    className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+                                    className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+                                    title="Download"
                                 >
                                     <Download className="w-4 h-4" />
-                                    Download
+                                    <span className="hidden sm:inline">Download</span>
                                 </button>
                             </>
                         )}
 
                         <button
                             onClick={() => setReadMode(true)}
-                            className="px-3 py-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-xs font-semibold rounded-full border border-blue-100 dark:border-blue-800 transition-colors cursor-pointer"
+                            className="px-2 sm:px-3 py-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-xs font-semibold rounded-full border border-blue-100 dark:border-blue-800 transition-colors cursor-pointer self-center whitespace-nowrap"
                         >
                             Read Mode
                         </button>
