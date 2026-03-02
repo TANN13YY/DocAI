@@ -473,15 +473,15 @@ const LandingPage = ({ onFileUpload, isUploading, isDarkMode, toggleTheme }) => 
                             </div>
                         ) : (
                             reviews.map((review) => (
-                                <div key={review.id} className="p-8 bg-slate-900 text-white rounded-2xl border border-slate-800 shadow-xl">
+                                <div key={review.id} className="p-8 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
                                     <div className="flex gap-1 mb-4 text-yellow-400">
                                         {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className={`w-4 h-4 fill-current ${i < review.rating ? '' : 'text-slate-700'}`} />
+                                            <Star key={i} className={`w-4 h-4 fill-current ${i < review.rating ? '' : 'text-slate-300 dark:text-slate-700'}`} />
                                         ))}
                                     </div>
                                     <h4 className="font-bold text-lg mb-1">{review.name}</h4>
-                                    <p className="text-slate-400 text-sm mb-4">{review.role || 'User'}</p>
-                                    <p className="text-slate-300 leading-relaxed">
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">{review.role || 'User'}</p>
+                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                                         {review.content}
                                     </p>
                                 </div>
